@@ -14,9 +14,19 @@ body {
     align-items: center;
 }
 .fb-text h1 {
-    color: #1877f2;
-    font-size: 60px;
+    /* আপনার পছন্দের গ্রাডিয়েন্ট কালার (এখানে নীল এবং সায়ান দেওয়া হয়েছে) */
+   background: linear-gradient(to right, #1877f2, #a700ff);
+    
+    /* নিচের ৩টি লাইন টেক্সটে কালার দেখানোর জন্য মাস্ট লাগবেই */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+
+    font-size: 60px; /* আপনার আগের সাইজ */
+    font-weight: bold;
     margin-bottom: 0;
+    display: inline-block; /* এটি দিলে গ্রাডিয়েন্ট ঠিকমতো বসে */
 }
 .fb-text p {
     font-size: 24px;
