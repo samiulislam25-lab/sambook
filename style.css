@@ -7,75 +7,159 @@ body {
     height: 100vh;
     margin: 0;
 }
+
 .container {
     display: flex;
-    width: 900px;
+    width: 100%;
+    max-width: 1000px;
     justify-content: space-between;
     align-items: center;
+    padding: 20px;
 }
+
+.fb-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1;
+}
+
+.main-logo {
+    width: 100px; 
+    height: auto;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
 .fb-text h1 {
-    /* আপনার পছন্দের গ্রাডিয়েন্ট কালার (এখানে নীল এবং সায়ান দেওয়া হয়েছে) */
-   background: linear-gradient(to right, #1877f2, #a700ff);
-    
-    /* নিচের ৩টি লাইন টেক্সটে কালার দেখানোর জন্য মাস্ট লাগবেই */
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc23b6, #bc1888);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent;
-
-    font-size: 60px; /* আপনার আগের সাইজ */
+    font-size: 60px;
+    font-weight: 800;
+    font-family: 'Arial Black', sans-serif;
+    margin: 0;
+    letter-spacing: -2px;
+}
+#signupForm h3 {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc23b6, #bc1888);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    font-size: 30px;
     font-weight: bold;
-    margin-bottom: 0;
-    display: inline-block; /* এটি দিলে গ্রাডিয়েন্ট ঠিকমতো বসে */
+    margin-bottom: 5px;
+}
+/* Sign Up ফর্মের নিচের ছোট লেখাটির জন্য */
+#signupForm p {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc23b6, #bc1888);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    
+    font-size: 16px;
+    font-weight: 600; /* লেখাটি একটু স্পষ্ট দেখানোর জন্য */
+    margin-top: 0;
+    margin-bottom: 10px;
+    display: inline-block; /* গ্রাডিয়েন্ট ঠিকমতো পাওয়ার জন্য */
 }
 .fb-text p {
     font-size: 24px;
-    width: 400px;
+    line-height: 28px;
+    width: 450px;
+    margin-top: 10px;
 }
+
 .form-box {
     background: white;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
     width: 350px;
     text-align: center;
+    margin-left: 20px;
 }
+
 input {
     width: 90%;
-    padding: 12px;
-    margin: 10px 0;
+    padding: 14px;
+    margin: 8px 0;
     border: 1px solid #dddfe2;
     border-radius: 6px;
+    font-size: 16px;
 }
+
+input:focus {
+    outline: none;
+    border-color: #1877f2;
+    box-shadow: 0 0 0 2px #e7f3ff;
+}
+
 .login-btn {
-    width: 100%;
-    background-color: #1877f2;
+    width: 98%;
+     background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc23b6, #bc1888);  
     color: white;
     border: none;
     padding: 12px;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
     border-radius: 6px;
     cursor: pointer;
+    margin-top: 10px;
 }
+
+.login-btn:hover { background-color: #166fe5; }
+
 .create-btn {
     background-color: #42b72a;
     color: white;
     border: none;
-    padding: 10px 20px;
-    font-size: 16px;
+    padding: 0 16px;
+    line-height: 48px;
+    font-size: 17px;
     font-weight: bold;
     border-radius: 6px;
-    margin-top: 15px;
+    margin-top: 20px;
     cursor: pointer;
 }
+
+.create-btn:hover { background-color: #36a420; }
+
 .signup-btn {
-    width: 100%;
-    background-color: #42b72a;
+    width: 98%;
+       background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc23b6, #bc1888);  
+  background-color: #42b72a;
     color: white;
     border: none;
     padding: 12px;
     font-size: 18px;
+    font-weight: bold;
     border-radius: 6px;
     cursor: pointer;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #dadde1;
+    margin: 20px 0;
+}
+
+.forgot-link {
+    color: #1877f2;
+    text-decoration: none;
+    font-size: 14px;
+    display: block;
+    margin-top: 10px;
+}
+
+@media (max-width: 900px) {
+    .container { flex-direction: column; text-align: center; }
+    .fb-text { align-items: center; margin-bottom: 40px; }
+    .fb-text p { width: 100%; font-size: 20px; }
+    .form-box { margin-left: 0; }
 }
