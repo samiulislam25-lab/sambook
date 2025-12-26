@@ -1,12 +1,19 @@
-function toggleForm() {
+function toggleForm(type) {
     const loginForm = document.getElementById('loginForm');
     const signupForm = document.getElementById('signupForm');
-    
-    if (loginForm.style.display === "none") {
-        loginForm.style.display = "block";
-        signupForm.style.display = "none";
-    } else {
-        loginForm.style.display = "none";
+    const forgotForm = document.getElementById('forgotForm');
+
+    // সব আগে লুকিয়ে ফেলি
+    loginForm.style.display = "none";
+    signupForm.style.display = "none";
+    forgotForm.style.display = "none";
+
+    // যেটা দরকার সেটা দেখাই
+    if (type === 'signup') {
         signupForm.style.display = "block";
+    } else if (type === 'forgot') {
+        forgotForm.style.display = "block";
+    } else {
+        loginForm.style.display = "block";
     }
 }

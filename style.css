@@ -44,30 +44,7 @@ body {
     margin: 0;
     letter-spacing: -2px;
 }
-#signupForm h3 {
-    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc23b6, #bc1888);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent;
-    font-size: 30px;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-/* Sign Up ফর্মের নিচের ছোট লেখাটির জন্য */
-#signupForm p {
-    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc23b6, #bc1888);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent;
-    
-    font-size: 16px;
-    font-weight: 600; /* লেখাটি একটু স্পষ্ট দেখানোর জন্য */
-    margin-top: 0;
-    margin-bottom: 10px;
-    display: inline-block; /* গ্রাডিয়েন্ট ঠিকমতো পাওয়ার জন্য */
-}
+
 .fb-text p {
     font-size: 24px;
     line-height: 28px;
@@ -94,15 +71,9 @@ input {
     font-size: 16px;
 }
 
-input:focus {
-    outline: none;
-    border-color: #1877f2;
-    box-shadow: 0 0 0 2px #e7f3ff;
-}
-
 .login-btn {
     width: 98%;
-     background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc23b6, #bc1888);  
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc23b6, #bc1888);
     color: white;
     border: none;
     padding: 12px;
@@ -113,7 +84,26 @@ input:focus {
     margin-top: 10px;
 }
 
-.login-btn:hover { background-color: #166fe5; }
+.signup-btn {
+    width: 98%;
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc23b6, #bc1888);
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#quick-text {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc23b6, #bc1888);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    font-weight: 600;
+}
 
 .create-btn {
     background-color: #42b72a;
@@ -128,34 +118,22 @@ input:focus {
     cursor: pointer;
 }
 
-.create-btn:hover { background-color: #36a420; }
-
-.signup-btn {
-    width: 98%;
-       background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc23b6, #bc1888);  
-  background-color: #42b72a;
-    color: white;
+.cancel-btn {
+    background-color: #e4e6eb;
+    color: #4b4f56;
     border: none;
-    padding: 12px;
-    font-size: 18px;
+    padding: 0 16px;
+    height: 48px;
+    font-size: 17px;
     font-weight: bold;
     border-radius: 6px;
     cursor: pointer;
+    flex: 1;
 }
 
-hr {
-    border: none;
-    border-top: 1px solid #dadde1;
-    margin: 20px 0;
-}
+hr { border: none; border-top: 1px solid #dadde1; margin: 20px 0; }
 
-.forgot-link {
-    color: #1877f2;
-    text-decoration: none;
-    font-size: 14px;
-    display: block;
-    margin-top: 10px;
-}
+.forgot-link { color: #1877f2; text-decoration: none; font-size: 14px; display: block; margin-top: 10px; }
 
 @media (max-width: 900px) {
     .container { flex-direction: column; text-align: center; }
